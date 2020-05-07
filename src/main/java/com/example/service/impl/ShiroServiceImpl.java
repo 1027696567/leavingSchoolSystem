@@ -45,24 +45,10 @@ public class ShiroServiceImpl implements ShiroService {
      * 登录接口
      * */
     @Override
-
-    public Serializable userLogin(HttpServletResponse response, String username, String password) {
+    public Serializable userLogin(String username, String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token1 = new UsernamePasswordToken(username,password);
-        try {
-            subject.login(token1);
-        }catch (IncorrectCredentialsException e) {
-            response.setStatus(202);
-            return e.getMessage();
-        }catch (UnknownAccountException e) {
-            response.setStatus(202);
-            return e.getMessage();
-        }catch (LockedAccountException e) {
-            response.setStatus(203);
-            return e.getMessage();
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        subject.login(token1);
         Serializable token = subject.getSession().getId();
         return token;
     }
@@ -156,6 +142,7 @@ public class ShiroServiceImpl implements ShiroService {
         routerData.setPath("/");
         routerData.setComponent("dashboard");
         routerData.setChildren(childrens);
+        routerData.setRedirect("menu1_item1");
         routerDatas.add(routerData);
         map.put("routerData", routerDatas);
         return map;
@@ -259,43 +246,6 @@ public class ShiroServiceImpl implements ShiroService {
         sysUser.setUserId(userId);
         sysUser.setStatus((byte) 0);
         sysUserMapper.updateByPrimaryKeySelective(sysUser);
-    }
-     * */
-
-    /**
-     * 路由demo
-
-    @Override
-    public Map<String, List> routerDemo() {
-        NavData navData = new NavData();
-        navData.setIcon("/static/images/money.png");
-        navData.setIndex("sales");
-        NavData.Subs sub = new NavData.Subs();
-        sub.setIndex("/menu1_item1");
-        sub.setTitle("选项1");
-        List<NavData.Subs> subs = new ArrayList<>();
-        subs.add(sub);
-        navData.setSubs(subs);
-        navData.setTitle("菜单一");
-        List<NavData> navDatas = new ArrayList<>();
-        navDatas.add(navData);
-        RouterData.Children children = new RouterData.Children();
-        children.setComponent("menu1_item1");
-        children.setName("menu1_item1");
-        children.setPath("menu1_item1");
-        List<RouterData.Children> childrens = new ArrayList<>();
-        childrens.add(children);
-        RouterData routerData = new RouterData();
-        routerData.setChildren(childrens);
-        routerData.setComponent("dashboard");
-        routerData.setName("main");
-        routerData.setPath("/");
-        List<RouterData> routerDatas = new ArrayList<>();
-        routerDatas.add(routerData);
-        Map<String, List> map = new HashMap<>();
-        map.put("navData", navDatas);
-        map.put("routerData", routerDatas);
-        return map;
     }
      * */
 /*

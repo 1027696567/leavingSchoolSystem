@@ -32,5 +32,7 @@ public class SysRole implements Serializable {
      */
     private String createTime;
 
+    private Long deptId;
+
     private static final long serialVersionUID = 1L;
 }

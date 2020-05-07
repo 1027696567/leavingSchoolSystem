@@ -13,7 +13,7 @@ public interface ShiroService {
     /**
      * 登录接口
      * */
-    Serializable userLogin(HttpServletResponse response, String username, String password);
+    Serializable userLogin(String username, String password);
     /**
      * 获取用户角色
      * @param username username

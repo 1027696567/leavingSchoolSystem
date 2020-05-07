@@ -7,9 +7,10 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
   </resultMap>
   <sql id="Base_Column_List">
-    role_id, role_name, remark, create_user_id, create_time
+    role_id, role_name, remark, create_user_id, create_time, dept_id
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -18,7 +19,7 @@
     where role_id = #{roleId,jdbcType=INTEGER}
   </select>
   <select id="selectByUserName" resultMap="BaseResultMap">
-    SELECT c.role_id as role_id, c.role_name as role_name FROM ((
+    SELECT c.role_id as role_id, c.role_name as role_name, c.dept_id as dept_id FROM ((
     (SELECT id FROM sys_user WHERE username = #{username,jdbcType=VARCHAR})AS a
     LEFT JOIN sys_user_role AS b ON a.id = b.user_id)
     LEFT JOIN sys_role AS c ON c.role_id = b.role_id)
@@ -29,9 +30,9 @@
   </delete>
   <insert id="insert" parameterType="com.example.model.SysRole">
     insert into sys_role (role_id, role_name, remark,
-      create_user_id, create_time)
+      create_user_id, create_time, dept_id)
     values (#{roleId,jdbcType=INTEGER}, #{roleName,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
-      #{createUserId,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR})
+      #{createUserId,jdbcType=INTEGER}, #{createTime,jdbcType=VARCHAR}, #{deptId,jdbcType=BIGINT})
   </insert>
   <insert id="insertSelective" parameterType="com.example.model.SysRole">
     insert into sys_role
@@ -51,6 +52,9 @@
       <if test="createTime != null">
         create_time,
       </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="roleId != null">
@@ -67,6 +71,9 @@
       </if>
       <if test="createTime != null">
         #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=BIGINT},
       </if>
     </trim>
   </insert>
@@ -85,6 +92,9 @@
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=VARCHAR},
       </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=BIGINT},
+      </if>
     </set>
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
@@ -93,7 +103,8 @@
     set role_name = #{roleName,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
       create_user_id = #{createUserId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=VARCHAR}
+      create_time = #{createTime,jdbcType=VARCHAR},
+      dept_id = #{deptId,jdbcType=BIGINT}
     where role_id = #{roleId,jdbcType=INTEGER}
   </update>
 </mapper>

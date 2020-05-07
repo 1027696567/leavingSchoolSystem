@@ -3,6 +3,8 @@ package com.example.mapper;
 import com.example.model.Information;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface InformationMapper {
     int deleteByPrimaryKey(Long id);
@@ -16,4 +18,6 @@ public interface InformationMapper {
     int updateByPrimaryKeySelective(Information record);
 
     int updateByPrimaryKey(Information record);
+
+    List<Information> selectAll();
 }

@@ -11,7 +11,7 @@ import java.util.Date;
  */
 
 @Data
-public class Information implements Serializable {
+public class Information extends BaseModel implements Serializable {
     private Long id;
 
     /**
@@ -75,5 +75,7 @@ public class Information implements Serializable {
     private Byte active;
 
     private static final long serialVersionUID = 1L;
+
+    private String name;
 
 }

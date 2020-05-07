@@ -15,6 +15,7 @@
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
     <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
   </resultMap>
   <sql id="Base_Column_List">
     id, title, content, img, dept_id, audit_status, status, audit_res_id, create_time, 
@@ -25,6 +26,9 @@
     <include refid="Base_Column_List" />
     from information
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select a.* ,b.name As name from information AS a LEFT JOIN department AS b ON a.dept_id = b.dept_id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from information

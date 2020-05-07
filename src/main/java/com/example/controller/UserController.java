@@ -1,7 +1,9 @@
 package com.example.controller;
 
+import com.example.model.Result;
 import com.example.service.ShiroService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,14 +31,10 @@ public class UserController {
     private ShiroService shiroService;
 
     @GetMapping("/login")
-    public Serializable userLogin(HttpServletResponse response, @RequestParam(value = "userName") String userName, @RequestParam(value = "passWord") String passWord) {
-        return shiroService.userLogin(response,userName,passWord);
+    public Result userLogin(@RequestParam(value = "userName") String userName, @RequestParam(value = "passWord") String passWord) {
+        Map<String,Object> map = new HashMap<>(16);
+        map.put("token",shiroService.userLogin(userName,passWord));
+        map.put("menu",shiroService.getMenu());
+        return Result.success(map);
     }
-
-    @GetMapping("/menu")
-    @RequiresAuthentication
-    public Map<String, List> list() {
-        return shiroService.getMenu();
-    }
-
 }
