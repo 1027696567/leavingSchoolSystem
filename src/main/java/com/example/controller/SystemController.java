@@ -25,4 +25,10 @@ public class SystemController {
     public Result findAllInformation() {
         return systemService.findAllInformation();
     }
+
+    @GetMapping("/partInformation")
+    @RequiresPermissions("sys:user:shiro")
+    public Result findPartInformation(@RequestParam("title")String title,@RequestParam("status")byte status,@RequestParam("auditStatus")byte auditStatus) {
+        return systemService.findByCondition(title,status,auditStatus);
+    }
 }

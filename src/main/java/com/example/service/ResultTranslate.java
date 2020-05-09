@@ -1,5 +1,7 @@
 package com.example.service;
 
+import java.util.List;
+
 public interface ResultTranslate {
 
     String translateActive(Object value);

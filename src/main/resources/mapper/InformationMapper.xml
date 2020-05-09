@@ -28,7 +28,17 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select a.* ,b.name As name from information AS a LEFT JOIN department AS b ON a.dept_id = b.dept_id
+    select a.* ,b.name As name from (information AS a LEFT JOIN department AS b ON a.dept_id = b.dept_id) WHERE active = 1 order by update_time desc
+  </select>
+  <select id="selectByCondition" parameterType="com.example.model.Information" resultMap="BaseResultMap">
+    select a.*,b.name As name from (select * from information
+    　　<trim prefix="WHERE" prefixOverrides="AND | OR">
+         <if test="title != null and title.length()>0">AND title like concat('%',#{title,jdbcType=VARCHAR},'%')</if>
+         <if test="status != null and status != 2">AND status=#{status,jdbcType=TINYINT}</if>
+         <if test="auditStatus != null and auditStatus != 2">AND audit_status=#{auditStatus,jdbcType=TINYINT}</if>
+        AND active = 1
+        </trim>
+    ) As a LEFT JOIN department As b ON a.dept_id = b.dept_id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from information

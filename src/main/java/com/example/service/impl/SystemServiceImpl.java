@@ -60,7 +60,14 @@ public class SystemServiceImpl implements SystemService {
 
     @Override
     public Result findByCondition(String title, byte status, byte auditStatus) {
-
-        return null;
+        List<Information> informationList = informationMapper.selectByCondition(title,status,auditStatus);
+                informationList.forEach(
+                information ->
+                {
+                    information.setActiveName(resultTranslate.translateActive(information.getActive()));
+                    information.setStatusName(resultTranslate.translateStatus(information.getStatus()));
+                    information.setAuditStatusName(resultTranslate.translateAuditStatus(information.getAuditStatus()));
+                });
+        return Result.success(informationList);
     }
 }

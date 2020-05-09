@@ -20,4 +20,6 @@ public interface InformationMapper {
     int updateByPrimaryKey(Information record);
 
     List<Information> selectAll();
+
+    List<Information> selectByCondition(String title,byte status,byte auditStatus);
 }
