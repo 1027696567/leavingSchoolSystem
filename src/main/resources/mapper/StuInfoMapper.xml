@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.StuInfoMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.StuInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="stu_id" jdbcType="BIGINT" property="stuId" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="identity_id" jdbcType="BIGINT" property="identityId" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="profession_id" jdbcType="BIGINT" property="professionId" />
+    <result column="edu_sys" jdbcType="TINYINT" property="eduSys" />
+    <result column="admission_date" jdbcType="DATE" property="admissionDate" />
+    <result column="graduation_date" jdbcType="DATE" property="graduationDate" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="edu_level" jdbcType="TINYINT" property="eduLevel" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="img" jdbcType="VARCHAR" property="img" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, name, stu_id, sex, identity_id, dept_id, profession_id, edu_sys, admission_date, 
+    graduation_date, birthday, edu_level, class_id, img, active
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from stu_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from stu_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.StuInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into stu_info (user_id, name, stu_id, 
+      sex, identity_id, dept_id, 
+      profession_id, edu_sys, admission_date, 
+      graduation_date, birthday, edu_level, 
+      class_id, img, active
+      )
+    values (#{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{stuId,jdbcType=BIGINT}, 
+      #{sex,jdbcType=TINYINT}, #{identityId,jdbcType=BIGINT}, #{deptId,jdbcType=BIGINT}, 
+      #{professionId,jdbcType=BIGINT}, #{eduSys,jdbcType=TINYINT}, #{admissionDate,jdbcType=DATE}, 
+      #{graduationDate,jdbcType=DATE}, #{birthday,jdbcType=DATE}, #{eduLevel,jdbcType=TINYINT}, 
+      #{classId,jdbcType=BIGINT}, #{img,jdbcType=VARCHAR}, #{active,jdbcType=TINYINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.StuInfo">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into stu_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="stuId != null">
+        stu_id,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="identityId != null">
+        identity_id,
+      </if>
+      <if test="deptId != null">
+        dept_id,
+      </if>
+      <if test="professionId != null">
+        profession_id,
+      </if>
+      <if test="eduSys != null">
+        edu_sys,
+      </if>
+      <if test="admissionDate != null">
+        admission_date,
+      </if>
+      <if test="graduationDate != null">
+        graduation_date,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="eduLevel != null">
+        edu_level,
+      </if>
+      <if test="classId != null">
+        class_id,
+      </if>
+      <if test="img != null">
+        img,
+      </if>
+      <if test="active != null">
+        active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="stuId != null">
+        #{stuId,jdbcType=BIGINT},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="identityId != null">
+        #{identityId,jdbcType=BIGINT},
+      </if>
+      <if test="deptId != null">
+        #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="professionId != null">
+        #{professionId,jdbcType=BIGINT},
+      </if>
+      <if test="eduSys != null">
+        #{eduSys,jdbcType=TINYINT},
+      </if>
+      <if test="admissionDate != null">
+        #{admissionDate,jdbcType=DATE},
+      </if>
+      <if test="graduationDate != null">
+        #{graduationDate,jdbcType=DATE},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="eduLevel != null">
+        #{eduLevel,jdbcType=TINYINT},
+      </if>
+      <if test="classId != null">
+        #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="img != null">
+        #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.StuInfo">
+    update stu_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="stuId != null">
+        stu_id = #{stuId,jdbcType=BIGINT},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=TINYINT},
+      </if>
+      <if test="identityId != null">
+        identity_id = #{identityId,jdbcType=BIGINT},
+      </if>
+      <if test="deptId != null">
+        dept_id = #{deptId,jdbcType=BIGINT},
+      </if>
+      <if test="professionId != null">
+        profession_id = #{professionId,jdbcType=BIGINT},
+      </if>
+      <if test="eduSys != null">
+        edu_sys = #{eduSys,jdbcType=TINYINT},
+      </if>
+      <if test="admissionDate != null">
+        admission_date = #{admissionDate,jdbcType=DATE},
+      </if>
+      <if test="graduationDate != null">
+        graduation_date = #{graduationDate,jdbcType=DATE},
+      </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="eduLevel != null">
+        edu_level = #{eduLevel,jdbcType=TINYINT},
+      </if>
+      <if test="classId != null">
+        class_id = #{classId,jdbcType=BIGINT},
+      </if>
+      <if test="img != null">
+        img = #{img,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        active = #{active,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.StuInfo">
+    update stu_info
+    set user_id = #{userId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      stu_id = #{stuId,jdbcType=BIGINT},
+      sex = #{sex,jdbcType=TINYINT},
+      identity_id = #{identityId,jdbcType=BIGINT},
+      dept_id = #{deptId,jdbcType=BIGINT},
+      profession_id = #{professionId,jdbcType=BIGINT},
+      edu_sys = #{eduSys,jdbcType=TINYINT},
+      admission_date = #{admissionDate,jdbcType=DATE},
+      graduation_date = #{graduationDate,jdbcType=DATE},
+      birthday = #{birthday,jdbcType=DATE},
+      edu_level = #{eduLevel,jdbcType=TINYINT},
+      class_id = #{classId,jdbcType=BIGINT},
+      img = #{img,jdbcType=VARCHAR},
+      active = #{active,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
