@@ -32,12 +32,12 @@ public class SystemServiceImpl implements SystemService {
     @Override
     public Result addInformation(Information information) {
         List<SysRole> sysRoleList = sysRoleMapper.selectByUserName(information.getCreateUser());
-        information.setAuditStatus((byte) 1);
+        information.setAuditStatus((byte) 0);
         information.setActive((byte) 1);
         information.setCreateTime(new Date());
         information.setUpdateTime(new Date());
         information.setDeptId(sysRoleList.get(0).getDeptId());
-        information.setStatus((byte) 1);
+        information.setStatus((byte) -1);
         if (informationMapper.insertSelective(information) != 0) {
             return Result.success();
         } else {
@@ -69,5 +69,16 @@ public class SystemServiceImpl implements SystemService {
                     information.setAuditStatusName(resultTranslate.translateAuditStatus(information.getAuditStatus()));
                 });
         return Result.success(informationList);
+    }
+
+    @Override
+    public Result findById(Long id) {
+        return Result.success(informationMapper.selectById(id));
+    }
+
+    @Override
+    public Result auditInformation(Information information) {
+        informationMapper.updateByPrimaryKeySelective(information);
+        return Result.success();
     }
 }

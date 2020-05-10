@@ -10,4 +10,8 @@ public interface SystemService {
     Result findAllInformation();
 
     Result findByCondition(String title,byte status,byte auditStatus);
+
+    Result findById(Long id);
+
+    Result auditInformation(Information information);
 }

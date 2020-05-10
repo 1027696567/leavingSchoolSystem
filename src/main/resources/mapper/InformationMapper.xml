@@ -40,6 +40,11 @@
         </trim>
     ) As a LEFT JOIN department As b ON a.dept_id = b.dept_id
   </select>
+  <select id="selectById" resultMap="BaseResultMap">
+    select a.*,b.name as name from (
+    (select * from information where id = #{id,jdbcType=BIGINT} and active = 1) as a
+    left join department as b on a.dept_id = b.dept_id)
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from information
     where id = #{id,jdbcType=BIGINT}
