@@ -1,7 +1,9 @@
 package com.example.mapper;
 
 import com.example.model.AuditRes;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface AuditResMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +16,6 @@ public interface AuditResMapper {
     int updateByPrimaryKeySelective(AuditRes record);
 
     int updateByPrimaryKey(AuditRes record);
+
+    AuditRes selectByInformationId(Long id);
 }

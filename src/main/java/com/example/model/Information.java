@@ -76,6 +76,9 @@ public class Information extends BaseModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 发布部门名称
+     */
     private String name;
 
 }

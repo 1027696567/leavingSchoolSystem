@@ -1,5 +1,7 @@
 package com.example.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * stu_info
  * @author 
  */
+@Data
 public class StuInfo implements Serializable {
     private Long id;
 
@@ -87,131 +90,4 @@ public class StuInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getStuId() {
-        return stuId;
-    }
-
-    public void setStuId(Long stuId) {
-        this.stuId = stuId;
-    }
-
-    public Byte getSex() {
-        return sex;
-    }
-
-    public void setSex(Byte sex) {
-        this.sex = sex;
-    }
-
-    public Long getIdentityId() {
-        return identityId;
-    }
-
-    public void setIdentityId(Long identityId) {
-        this.identityId = identityId;
-    }
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-
-    public Long getProfessionId() {
-        return professionId;
-    }
-
-    public void setProfessionId(Long professionId) {
-        this.professionId = professionId;
-    }
-
-    public Byte getEduSys() {
-        return eduSys;
-    }
-
-    public void setEduSys(Byte eduSys) {
-        this.eduSys = eduSys;
-    }
-
-    public Date getAdmissionDate() {
-        return admissionDate;
-    }
-
-    public void setAdmissionDate(Date admissionDate) {
-        this.admissionDate = admissionDate;
-    }
-
-    public Date getGraduationDate() {
-        return graduationDate;
-    }
-
-    public void setGraduationDate(Date graduationDate) {
-        this.graduationDate = graduationDate;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
-    public Byte getEduLevel() {
-        return eduLevel;
-    }
-
-    public void setEduLevel(Byte eduLevel) {
-        this.eduLevel = eduLevel;
-    }
-
-    public Long getClassId() {
-        return classId;
-    }
-
-    public void setClassId(Long classId) {
-        this.classId = classId;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
-    }
-
-    public Byte getActive() {
-        return active;
-    }
-
-    public void setActive(Byte active) {
-        this.active = active;
-    }
 }

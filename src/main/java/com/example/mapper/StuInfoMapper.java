@@ -1,7 +1,9 @@
 package com.example.mapper;
 
 import com.example.model.StuInfo;
+import org.apache.ibatis.annotations.Mapper;
 
+@Mapper
 public interface StuInfoMapper {
     int deleteByPrimaryKey(Long id);
 

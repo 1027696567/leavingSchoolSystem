@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.AuditRes;
 import com.example.model.Information;
 import com.example.model.Result;
 import com.example.service.SystemService;
@@ -36,5 +37,29 @@ public class SystemController {
     @RequiresPermissions("sys:user:shiro")
     public Result findInformation(@RequestParam("id")Long id){
         return systemService.findById(id);
+    }
+
+    @PostMapping("/auditRes")
+    @RequiresPermissions("sys:user:shiro")
+    public Result auditInformation(@RequestBody AuditRes auditRes) {
+        return systemService.auditInformation(auditRes);
+    }
+
+    @PutMapping("/information")
+    @RequiresPermissions("sys:user:shiro")
+    public Result updateInformation(@RequestBody Information information) {
+        return systemService.updateInformation(information);
+    }
+
+    @PutMapping("/informationStatus")
+    @RequiresPermissions("sys:user:shiro")
+    public Result updateInformationStatus(@RequestBody Information information) {
+        return systemService.updateInformationStatus(information);
+    }
+
+    @GetMapping("/auditRes")
+    @RequiresPermissions("sys:user:shiro")
+    public Result findAuditResByInformationId(@RequestParam("id")Long id) {
+        return Result.success(systemService.findAuditResByInformationId(id));
     }
 }

@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.model.AuditRes;
 import com.example.model.Information;
 import com.example.model.Result;
 
@@ -13,5 +14,11 @@ public interface SystemService {
 
     Result findById(Long id);
 
-    Result auditInformation(Information information);
+    Result auditInformation(AuditRes auditRes);
+
+    Result updateInformation(Information information);
+
+    Result updateInformationStatus(Information information);
+
+    AuditRes findAuditResByInformationId(Long id);
 }

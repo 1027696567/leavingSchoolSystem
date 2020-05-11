@@ -1,11 +1,14 @@
 package com.example.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
  * department
  * @author 
  */
+@Data
 public class Department implements Serializable {
     private Long id;
 
@@ -21,27 +24,4 @@ public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

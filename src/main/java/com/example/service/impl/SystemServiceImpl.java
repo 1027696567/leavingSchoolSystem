@@ -1,11 +1,9 @@
 package com.example.service.impl;
 
+import com.example.mapper.AuditResMapper;
 import com.example.mapper.InformationMapper;
 import com.example.mapper.SysRoleMapper;
-import com.example.model.Information;
-import com.example.model.Result;
-import com.example.model.ResultCode;
-import com.example.model.SysRole;
+import com.example.model.*;
 import com.example.service.ResultTranslate;
 import com.example.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +26,9 @@ public class SystemServiceImpl implements SystemService {
 
     @Autowired
     ResultTranslate resultTranslate;
+
+    @Autowired
+    AuditResMapper auditResMapper;
 
     @Override
     public Result addInformation(Information information) {
@@ -77,8 +78,46 @@ public class SystemServiceImpl implements SystemService {
     }
 
     @Override
-    public Result auditInformation(Information information) {
+    public Result auditInformation(AuditRes auditRes) {
+        try {
+            AuditRes auditRes1 = auditResMapper.selectByInformationId(auditRes.getInformationId());
+            auditRes1.setContent(auditRes.getContent());
+            auditRes1.setUpdateUser(auditRes.getCreateUser());
+            auditRes1.setUpdateTime(new Date());
+            auditResMapper.updateByPrimaryKeySelective(auditRes1);
+        } catch (Exception e) {
+            auditRes.setActive((byte) 1);
+            auditRes.setCreateTime(new Date());
+            auditResMapper.insertSelective(auditRes);
+        } finally {
+            Information information = new Information();
+            information.setId(auditRes.getInformationId());
+            information.setUpdateTime(new Date());
+            information.setAuditStatus((byte) (auditRes.getContent().equals("")?1:-1));
+            informationMapper.updateByPrimaryKeySelective(information);
+            return Result.success();
+        }
+    }
+
+    @Override
+    public Result updateInformation(Information information) {
+        information.setAuditStatus((byte) 0);
+        information.setUpdateTime(new Date());
         informationMapper.updateByPrimaryKeySelective(information);
         return Result.success();
     }
+
+    @Override
+    public Result updateInformationStatus(Information information) {
+        information.setUpdateTime(new Date());
+        informationMapper.updateByPrimaryKeySelective(information);
+        return Result.success();
+    }
+
+    @Override
+    public AuditRes findAuditResByInformationId(Long id) {
+        return auditResMapper.selectByInformationId(id);
+    }
+
+
 }

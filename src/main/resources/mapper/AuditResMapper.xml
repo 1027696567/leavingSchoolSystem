@@ -21,6 +21,12 @@
     from audit_res
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByInformationId" resultType="com.example.model.AuditRes">
+    select
+    <include refid="Base_Column_List" />
+    from audit_res
+    where information_id = #{id,jdbcType=BIGINT} and active = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from audit_res
     where id = #{id,jdbcType=BIGINT}
