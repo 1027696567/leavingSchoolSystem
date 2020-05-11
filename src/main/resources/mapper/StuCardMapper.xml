@@ -19,6 +19,36 @@
     from stu_card
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <resultMap id="StuCardMap" type="com.example.model.StuCardInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="issue_date" jdbcType="DATE" property="issueDate" />
+    <result column="reissue_date" jdbcType="DATE" property="reissueDate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="cancel_date" jdbcType="DATE" property="cancelDate" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="BIGINT" property="identityId" />
+    <result column="stu_id" jdbcType="BIGINT" property="stuId" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="edu_sys" jdbcType="TINYINT" property="eduSys" />
+    <result column="admission_date" jdbcType="DATE" property="admissionDate" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
+  </resultMap>
+  <select id="selectByUsername" resultMap="StuCardMap">
+    select
+    b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date,
+    c.id, c.issue_date, c.reissue_date,c.cancel_date, c.`status`, c.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name
+    from (select id from sys_user where username = #{username,jdbcType=VARCHAR}) as a
+    LEFT JOIN stu_info as b on a.id = b.user_id
+    LEFT JOIN stu_card as c on b.id = c.stu_info_id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    WHERE c.active = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from stu_card
     where id = #{id,jdbcType=BIGINT}

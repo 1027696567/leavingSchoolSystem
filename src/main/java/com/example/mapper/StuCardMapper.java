@@ -16,4 +16,6 @@ public interface StuCardMapper {
     int updateByPrimaryKeySelective(StuCard record);
 
     int updateByPrimaryKey(StuCard record);
+
+    StuCard selectByUsername(String username);
 }

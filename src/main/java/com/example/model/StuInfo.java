@@ -10,7 +10,7 @@ import java.util.Date;
  * @author 
  */
 @Data
-public class StuInfo implements Serializable {
+public class StuInfo extends BaseModel implements Serializable {
     private Long id;
 
     /**
