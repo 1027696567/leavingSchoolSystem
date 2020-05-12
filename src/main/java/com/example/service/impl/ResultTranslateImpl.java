@@ -52,4 +52,23 @@ public class ResultTranslateImpl implements ResultTranslate {
         }
         return result;
     }
+
+    @Override
+    public String translateCancelStatus(byte value) {
+        String result = null;
+        if (!Objects.isNull(value)) {
+            switch (value){
+                case 0:
+                    result = "正常";
+                    break;
+                case 1:
+                    result = "待注销";
+                    break;
+                case -1:
+                    result = "已注销";
+                    break;
+            }
+        }
+        return result;
+    }
 }

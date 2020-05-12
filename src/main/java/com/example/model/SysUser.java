@@ -3,6 +3,7 @@ package com.example.model;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * sys_user
@@ -55,7 +56,7 @@ public class SysUser implements Serializable {
     /**
      * 创建时间
      */
-    private String createTime;
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 }

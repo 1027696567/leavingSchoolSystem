@@ -36,10 +36,6 @@ public class ShiroServiceImpl implements ShiroService {
     private SysRoleMapper sysRoleMapper;
     @Autowired
     private SysUserRoleMapper sysUserRoleMapper;
-    /**
-     * 用户拥有的角色Id
-     **/
-    private List<Integer> roleId;
 
     /**
      * 登录接口
@@ -248,9 +244,9 @@ public class ShiroServiceImpl implements ShiroService {
         sysUserMapper.updateByPrimaryKeySelective(sysUser);
     }
      * */
-/*
+
     @Override
-    public Integer register(SysUser sysUser) {
+    public Result register(SysUser sysUser) {
         // 按用户名获取salt值
         ByteSource salt = ByteSource.Util.bytes(sysUser.getUsername());
         // 获取加密后的密码
@@ -259,20 +255,19 @@ public class ShiroServiceImpl implements ShiroService {
         sysUser.setStatus((byte) 1);
         sysUser.setPassword(newPs);
         sysUser.setSalt(salt.toHex());
-        SysUser sysUser1 = sysUserMapper.selectByUserName(sysUser.getUsername());
-        if (sysUser1 == null) {
+        if (sysUserMapper.selectByUserName(sysUser.getUsername()) == null) {
             sysUserMapper.insertSelective(sysUser);
-            Long userId = sysUserMapper.selectIdByUserName(sysUser.getUsername());
+            SysUser sysUser1 = sysUserMapper.selectByUserName(sysUser.getUsername());
             SysUserRole sysUserRole = new SysUserRole();
-            sysUserRole.setUserId(userId);
-            sysUserRole.setRoleId((long) 4);
+            sysUserRole.setUserId(sysUser1.getId());
+            sysUserRole.setRoleId(10);
             sysUserRoleMapper.insertSelective(sysUserRole);
-            return 1;
+            return Result.success();
         } else {
-            return 0;
+            return Result.failure(ResultCode.SPECIFIED_QUESTIONED_USER_NOT_EXIST);
         }
     }
-    */
+
 /*
     @Override
     public Integer updateRole(UserInfo userInfo) {

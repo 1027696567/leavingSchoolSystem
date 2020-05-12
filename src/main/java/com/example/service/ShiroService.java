@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.model.Result;
 import com.example.model.SysUser;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +48,7 @@ public interface ShiroService {
     //Map<String, List> routerDemo();
 
 
-    //Integer register(SysUser sysUser);
+    Result register(SysUser sysUser);
 
     //Integer updateRole(UserInfo userInfo);
 }

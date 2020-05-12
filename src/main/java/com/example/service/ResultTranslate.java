@@ -9,4 +9,6 @@ public interface ResultTranslate {
     String translateStatus(byte value);
 
     String translateAuditStatus(byte value);
+
+    String translateCancelStatus(byte value);
 }

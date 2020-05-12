@@ -1,6 +1,7 @@
 package com.example.controller;
 
 import com.example.model.Result;
+import com.example.model.SysUser;
 import com.example.service.ShiroService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -36,5 +37,10 @@ public class UserController {
         map.put("token",shiroService.userLogin(userName,passWord));
         map.put("menu",shiroService.getMenu());
         return Result.success(map);
+    }
+
+    @PostMapping("/register")
+    public Result register (@RequestBody SysUser sysUser) {
+        return shiroService.register(sysUser);
     }
 }

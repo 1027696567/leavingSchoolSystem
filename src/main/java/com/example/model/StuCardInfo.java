@@ -1,6 +1,10 @@
 package com.example.model;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -38,6 +42,7 @@ public class StuCardInfo extends BaseModel implements Serializable {
 
     private String name;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long identityId;
 
     private Long stuId;
@@ -51,6 +56,8 @@ public class StuCardInfo extends BaseModel implements Serializable {
     private String deptName;
 
     private String professionName;
+
+    private Long classId;
 
     private static final long serialVersionUID = 1L;
 }

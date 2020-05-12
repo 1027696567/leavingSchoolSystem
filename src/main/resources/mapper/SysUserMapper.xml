@@ -11,7 +11,7 @@
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="create_user_id" jdbcType="INTEGER" property="createUserId" />
-    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, username, password, real_name, salt, email, mobile, status, create_user_id, create_time
@@ -40,7 +40,7 @@
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{realName,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
       #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createUserId,jdbcType=INTEGER},
-      #{createTime,jdbcType=VARCHAR})
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.example.model.SysUser">
     insert into sys_user
@@ -105,7 +105,7 @@
         #{createUserId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -137,7 +137,7 @@
         create_user_id = #{createUserId,jdbcType=INTEGER},
       </if>
       <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -152,7 +152,7 @@
       mobile = #{mobile,jdbcType=VARCHAR},
       status = #{status,jdbcType=TINYINT},
       create_user_id = #{createUserId,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=VARCHAR}
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

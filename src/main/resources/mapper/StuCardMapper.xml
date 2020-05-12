@@ -35,10 +35,11 @@
     <result column="admission_date" jdbcType="DATE" property="admissionDate" />
     <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
     <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
   </resultMap>
   <select id="selectByUsername" resultMap="StuCardMap">
     select
-    b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date,
+    b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
     c.id, c.issue_date, c.reissue_date,c.cancel_date, c.`status`, c.active,
     d.`name` as dept_name ,
     e.`name` as profession_name
@@ -48,6 +49,29 @@
     LEFT JOIN department as d on b.dept_id = d.dept_id
     LEFT JOIN profession as e on b.profession_id = e.profession_id
     WHERE c.active = 1
+  </select>
+  <select id="selectByCondition" resultMap="StuCardMap">
+    select b.name,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    a.id, a.issue_date, a.reissue_date,a.cancel_date, a.`status`, a.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name
+    from
+    (select *
+    from stu_card
+    <if test="status != null">WHERE status = #{status,jdbcType=TINYINT}</if>
+    ) as a
+    INNER JOIN
+    (select
+    id, user_id, name, identity_id, stu_id, sex, edu_sys, admission_date, profession_id, dept_id, class_id
+    from stu_info
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="stuId != null">AND stu_id = #{stuId,jdbcType=BIGINT}</if>
+      <if test="classId != null">AND class_id = #{classId,jdbcType=BIGINT}</if>
+    </trim>
+    ) as b on a.stu_info_id = b.id
+    INNER JOIN sys_user as c on b.user_id = c.id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from stu_card
