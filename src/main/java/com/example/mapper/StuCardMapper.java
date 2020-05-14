@@ -22,5 +22,5 @@ public interface StuCardMapper {
 
     List<StuCardInfo> selectByUsername(String username);
 
-    List<StuCardInfo> selectByCondition(Byte status,Long stuId,Long classId);
+    List<StuCardInfo> selectByCondition(Byte status,Long stuId,Long classId, Byte deptAuditResStatus);
 }

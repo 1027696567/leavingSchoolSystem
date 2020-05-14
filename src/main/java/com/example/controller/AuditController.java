@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.model.DeptAuditRes;
 import com.example.model.Result;
 import com.example.model.StuCard;
 import com.example.service.AuditService;
@@ -28,8 +29,14 @@ public class AuditController {
 
     @GetMapping("/stuCardInfoList")
     @RequiresPermissions("sys:user:shiro")
-    public Result findAllStuCard(@RequestParam("status")Byte status,@RequestParam("stuId")Long stuId,@RequestParam("classId")Long classId) {
-        return Result.success(auditService.findByCondition(status,stuId,classId));
+    public Result findAllStuCard(@RequestParam(value = "status")Byte status,@RequestParam("stuId")Long stuId,@RequestParam("classId")Long classId,@RequestParam("deptAuditResStatus")Byte deptAuditResStatus) {
+        return Result.success(auditService.findByCondition(status,stuId,classId,deptAuditResStatus));
+    }
+
+    @PostMapping("/deptAuditRes")
+    @RequiresPermissions("sys:user:shiro")
+    public Result updateDeptAuditRes(@RequestBody DeptAuditRes deptAuditRes){
+        return auditService.updateDeptAuditRes(deptAuditRes);
     }
 
 }

@@ -15,6 +15,14 @@
     from department
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByUsername" resultType="com.example.model.Department">
+    select d.dept_id as deptId, d.name as name
+    from
+    (select id from sys_user where username = #{username,jdbcType=VARCHAR}) as a
+    left join sys_user_role as b on a.id = b.user_id
+    left join sys_role as c on b.role_id = c.role_id
+    left join department as d on c.dept_id = d.dept_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from department
     where id = #{id,jdbcType=BIGINT}

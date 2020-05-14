@@ -59,5 +59,20 @@ public class StuCardInfo extends BaseModel implements Serializable {
 
     private Long classId;
 
+    private Long deptAuditResId;
+
+    private Byte deptAuditResStatus;
+
+    private String deptAuditResContent;
+
+    /**
+     * 审核时间
+     * */
+    private Date createTime;
+    /**
+     * 审核人
+     * */
+    private String createUser;
+
     private static final long serialVersionUID = 1L;
 }

@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.model.DeptAuditRes;
 import com.example.model.Result;
 import com.example.model.StuCard;
 import com.example.model.StuCardInfo;
@@ -11,7 +12,7 @@ public interface AuditService {
 
     Result updateStuCardStatus(StuCard stuCard);
 
-    List<StuCardInfo> findAllStuCard();
+    List<StuCardInfo> findByCondition(Byte status,Long stuId,Long classId, Byte deptAuditResStatus);
 
-    List<StuCardInfo> findByCondition(Byte status,Long stuId,Long classId);
+    Result updateDeptAuditRes(DeptAuditRes deptAuditRes);
 }

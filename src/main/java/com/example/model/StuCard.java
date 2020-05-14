@@ -40,6 +40,12 @@ public class StuCard implements Serializable {
      */
     private Byte active;
 
+    private String createUser;
+
+    private Date createTime;
+
+
+
     private static final long serialVersionUID = 1L;
 
 }

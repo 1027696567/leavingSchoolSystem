@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DeptAuditResMapper">
+    <resultMap id="BaseResultMap" type="com.example.model.DeptAuditRes">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+        <result column="stu_card_id" jdbcType="BIGINT" property="stuCardId" />
+        <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    </resultMap>
+    <insert id="insertSelective" parameterType="com.example.model.DeptAuditRes">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into dept_audit_res
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="stuCardId != null">
+                stu_card_id,
+            </if>
+            <if test="stuInfoId != null">
+                stu_info_id,
+            </if>
+            <if test="deptId != null">
+                dept_id,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="createUser != null">
+                create_user,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+            <if test="updateUser != null">
+                update_user,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="stuCardId != null">
+                #{stuCardId,jdbcType=BIGINT},
+            </if>
+            <if test="stuInfoId != null">
+                #{stuInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.example.model.DeptAuditRes">
+        update dept_audit_res
+        <set>
+            <if test="stuInfoId != null">
+                stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+            </if>
+            <if test="stuCardId != null">
+                stu_card_id = #{stuCardId,jdbcType=BIGINT},
+            </if>
+            <if test="deptId != null">
+                dept_id = #{deptId,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <select id="selectByStuCardId" resultMap="BaseResultMap">
+        select * from dept_audit_res where stu_card_id = #{stuCardId,jdbcType=BIGINT}
+    </select>
+</mapper>

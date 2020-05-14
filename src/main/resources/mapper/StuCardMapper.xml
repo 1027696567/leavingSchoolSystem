@@ -4,11 +4,13 @@
   <resultMap id="BaseResultMap" type="com.example.model.StuCard">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
-    <result column="issue_date" jdbcType="DATE" property="issueDate" />
-    <result column="reissue_date" jdbcType="DATE" property="reissueDate" />
+    <result column="issue_date" jdbcType="TIMESTAMP" property="issueDate" />
+    <result column="reissue_date" jdbcType="TIMESTAMP" property="reissueDate" />
     <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="cancel_date" jdbcType="DATE" property="cancelDate" />
+    <result column="cancel_date" jdbcType="TIMESTAMP" property="cancelDate" />
     <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     id, stu_info_id, issue_date, reissue_date, status, cancel_date, active
@@ -22,10 +24,10 @@
   <resultMap id="StuCardMap" type="com.example.model.StuCardInfo">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
-    <result column="issue_date" jdbcType="DATE" property="issueDate" />
-    <result column="reissue_date" jdbcType="DATE" property="reissueDate" />
+    <result column="issue_date" jdbcType="TIMESTAMP" property="issueDate" />
+    <result column="reissue_date" jdbcType="TIMESTAMP" property="reissueDate" />
     <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="cancel_date" jdbcType="DATE" property="cancelDate" />
+    <result column="cancel_date" jdbcType="TIMESTAMP" property="cancelDate" />
     <result column="active" jdbcType="TINYINT" property="active" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="identity_id" jdbcType="BIGINT" property="identityId" />
@@ -36,25 +38,34 @@
     <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
     <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
     <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="dept_audit_res_id" jdbcType="BIGINT" property="deptAuditResId" />
+    <result column="dept_audit_res_status" jdbcType="TINYINT" property="deptAuditResStatus" />
+    <result column="dept_audit_res_content" jdbcType="VARCHAR" property="deptAuditResContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
   </resultMap>
   <select id="selectByUsername" resultMap="StuCardMap">
     select
-    b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    b.id as stu_info_id, b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
     c.id, c.issue_date, c.reissue_date,c.cancel_date, c.`status`, c.active,
     d.`name` as dept_name ,
-    e.`name` as profession_name
+    e.`name` as profession_name,
+    f.id as dept_audit_res_id, f.`status` as dept_audit_res_status, f.content as dept_audit_res_content, f.create_time, f.create_user
     from (select id from sys_user where username = #{username,jdbcType=VARCHAR}) as a
     LEFT JOIN stu_info as b on a.id = b.user_id
     LEFT JOIN stu_card as c on b.id = c.stu_info_id
     LEFT JOIN department as d on b.dept_id = d.dept_id
     LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN dept_audit_res as f on c.id = f.stu_card_id
     WHERE c.active = 1
   </select>
   <select id="selectByCondition" resultMap="StuCardMap">
-    select b.name,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    select
+    b.id as stu_info_id, b.name,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
     a.id, a.issue_date, a.reissue_date,a.cancel_date, a.`status`, a.active,
     d.`name` as dept_name ,
-    e.`name` as profession_name
+    e.`name` as profession_name,
+    f.id as dept_audit_res_id, f.`status` as dept_audit_res_status, f.content as dept_audit_res_content, f.create_time, f.create_user
     from
     (select *
     from stu_card
@@ -72,6 +83,9 @@
     INNER JOIN sys_user as c on b.user_id = c.id
     LEFT JOIN department as d on b.dept_id = d.dept_id
     LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN dept_audit_res as f on a.id = f.stu_card_id
+    WHERE a.active = 1
+    <if test="deptAuditResStatus != null">AND f.status = #{deptAuditResStatus,jdbcType=TINYINT}</if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from stu_card
@@ -82,10 +96,10 @@
       SELECT LAST_INSERT_ID()
     </selectKey>
     insert into stu_card (stu_info_id, issue_date, reissue_date, 
-      status, cancel_date, active
+      status, cancel_date, active, create_time, create_user
       )
-    values (#{stuInfoId,jdbcType=BIGINT}, #{issueDate,jdbcType=DATE}, #{reissueDate,jdbcType=DATE}, 
-      #{status,jdbcType=TINYINT}, #{cancelDate,jdbcType=DATE}, #{active,jdbcType=TINYINT}
+    values (#{stuInfoId,jdbcType=BIGINT}, #{issueDate,jdbcType=TIMESTAMP}, #{reissueDate,jdbcType=TIMESTAMP},
+      #{status,jdbcType=TINYINT}, #{cancelDate,jdbcType=TIMESTAMP}, #{active,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.example.model.StuCard">
@@ -112,25 +126,37 @@
       <if test="active != null">
         active,
       </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="stuInfoId != null">
         #{stuInfoId,jdbcType=BIGINT},
       </if>
       <if test="issueDate != null">
-        #{issueDate,jdbcType=DATE},
+        #{issueDate,jdbcType=TIMESTAMP},
       </if>
       <if test="reissueDate != null">
-        #{reissueDate,jdbcType=DATE},
+        #{reissueDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         #{status,jdbcType=TINYINT},
       </if>
       <if test="cancelDate != null">
-        #{cancelDate,jdbcType=DATE},
+        #{cancelDate,jdbcType=TIMESTAMP},
       </if>
       <if test="active != null">
         #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -141,19 +167,25 @@
         stu_info_id = #{stuInfoId,jdbcType=BIGINT},
       </if>
       <if test="issueDate != null">
-        issue_date = #{issueDate,jdbcType=DATE},
+        issue_date = #{issueDate,jdbcType=TIMESTAMP},
       </if>
       <if test="reissueDate != null">
-        reissue_date = #{reissueDate,jdbcType=DATE},
+        reissue_date = #{reissueDate,jdbcType=TIMESTAMP},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=TINYINT},
       </if>
       <if test="cancelDate != null">
-        cancel_date = #{cancelDate,jdbcType=DATE},
+        cancel_date = #{cancelDate,jdbcType=TIMESTAMP},
       </if>
       <if test="active != null">
         active = #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
@@ -161,11 +193,13 @@
   <update id="updateByPrimaryKey" parameterType="com.example.model.StuCard">
     update stu_card
     set stu_info_id = #{stuInfoId,jdbcType=BIGINT},
-      issue_date = #{issueDate,jdbcType=DATE},
-      reissue_date = #{reissueDate,jdbcType=DATE},
+      issue_date = #{issueDate,jdbcType=TIMESTAMP},
+      reissue_date = #{reissueDate,jdbcType=TIMESTAMP},
       status = #{status,jdbcType=TINYINT},
-      cancel_date = #{cancelDate,jdbcType=DATE},
-      active = #{active,jdbcType=TINYINT}
+      cancel_date = #{cancelDate,jdbcType=TIMESTAMP},
+      active = #{active,jdbcType=TINYINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
