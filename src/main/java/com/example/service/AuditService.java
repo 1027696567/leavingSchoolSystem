@@ -15,4 +15,6 @@ public interface AuditService {
     List<StuCardInfo> findByCondition(Byte status,Long stuId,Long classId, Byte deptAuditResStatus);
 
     Result updateDeptAuditRes(DeptAuditRes deptAuditRes);
+
+
 }

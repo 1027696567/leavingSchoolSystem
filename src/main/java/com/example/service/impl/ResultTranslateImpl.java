@@ -71,4 +71,23 @@ public class ResultTranslateImpl implements ResultTranslate {
         }
         return result;
     }
+
+    @Override
+    public String translatePassStatus(byte value) {
+        String result = null;
+        if (!Objects.isNull(value)) {
+            switch (value){
+                case 0:
+                    result = "正常";
+                    break;
+                case 1:
+                    result = "申请转送";
+                    break;
+                case -1:
+                    result = "同意转送";
+                    break;
+            }
+        }
+        return result;
+    }
 }

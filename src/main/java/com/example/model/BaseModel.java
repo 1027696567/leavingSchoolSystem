@@ -7,7 +7,7 @@ import java.io.Serializable;
 @Data
 public class BaseModel implements Serializable {
     /**
-     * 上下架状态
+     * 上下架状态,部门内的审核状态都可用
      * */
     private String statusName;
     /**

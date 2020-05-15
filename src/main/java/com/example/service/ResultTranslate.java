@@ -11,4 +11,8 @@ public interface ResultTranslate {
     String translateAuditStatus(byte value);
 
     String translateCancelStatus(byte value);
+    /**
+     * 组织部转送状态
+     * */
+    String translatePassStatus(byte value);
 }
