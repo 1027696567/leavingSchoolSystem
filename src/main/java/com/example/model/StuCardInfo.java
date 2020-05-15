@@ -24,9 +24,16 @@ public class StuCardInfo extends BaseModel implements Serializable {
     private Date issueDate;
 
     /**
+     * 转换发证日期
+     * */
+    private String translateIssueDate;
+
+    /**
      * 补发日期
      */
     private Date reissueDate;
+
+    private String translateReissueDate;
 
     private Byte status;
 

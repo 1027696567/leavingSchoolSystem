@@ -26,6 +26,11 @@ public class PartyBranchInfo extends BaseModel implements Serializable {
      */
     private Date passDate;
 
+    /**
+     * 不需要映射
+     * */
+    private String translatePassTime;
+
     private Byte status;
 
     /**

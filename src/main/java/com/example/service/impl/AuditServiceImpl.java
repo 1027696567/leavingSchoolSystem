@@ -9,6 +9,7 @@ import com.example.service.ResultTranslate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,8 @@ public class AuditServiceImpl implements AuditService {
         if (stuCardInfos.size()>0){
             stuCardInfos.forEach(stuCardInfo -> {
                 stuCardInfo.setCancelStatus(resultTranslate.translateCancelStatus(stuCardInfo.getStatus()));
+                stuCardInfo.setTranslateIssueDate(DateFormat.getDateInstance().format(stuCardInfo.getIssueDate()));
+                //stuCardInfo.setTranslateReissueDate(DateFormat.getDateInstance().format(stuCardInfo.getReissueDate()));
                 if (!Objects.isNull(stuCardInfo.getDeptAuditResStatus())) {
                     stuCardInfo.setAuditStatusName(resultTranslate.translateAuditStatus(stuCardInfo.getDeptAuditResStatus()));
                 }
@@ -64,6 +67,8 @@ public class AuditServiceImpl implements AuditService {
         List<StuCardInfo> stuCardInfos = stuCardMapper.selectByCondition(status,stuId,classId,deptAuditResStatus);
         stuCardInfos.forEach(stuCardInfo -> {
             stuCardInfo.setCancelStatus(resultTranslate.translateCancelStatus(stuCardInfo.getStatus()));
+            stuCardInfo.setTranslateIssueDate(DateFormat.getDateInstance().format(stuCardInfo.getIssueDate()));
+            //stuCardInfo.setTranslateReissueDate(DateFormat.getDateInstance().format(stuCardInfo.getReissueDate()));
             if (!Objects.isNull(stuCardInfo.getDeptAuditResStatus())) {
                 stuCardInfo.setAuditStatusName(resultTranslate.translateAuditStatus(stuCardInfo.getDeptAuditResStatus()));
             }

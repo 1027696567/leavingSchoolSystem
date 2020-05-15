@@ -7,6 +7,7 @@ import com.example.service.PartyBranchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -28,6 +29,7 @@ public class PartyBranchServiceImpl implements PartyBranchService {
         if (partyBranchInfos.size()>0){
             partyBranchInfos.forEach(partyBranchInfo -> {
                 partyBranchInfo.setStatusName(resultTranslate.translatePassStatus(partyBranchInfo.getStatus()));
+                partyBranchInfo.setTranslatePassTime(DateFormat.getDateInstance().format(partyBranchInfo.getPassDate()));
                 if (!Objects.isNull(partyBranchInfo.getPartyBranchAuditResStatus())) {
                     partyBranchInfo.setAuditStatusName(resultTranslate.translateAuditStatus(partyBranchInfo.getPartyBranchAuditResStatus()));
                 }
@@ -60,6 +62,7 @@ public class PartyBranchServiceImpl implements PartyBranchService {
         List<PartyBranchInfo> partyBranchInfos = partyBranchMapper.selectByCondition(status,stuId,classId,partyBranchAuditResStatus);
         partyBranchInfos.forEach(partyBranchInfo -> {
             partyBranchInfo.setStatusName(resultTranslate.translatePassStatus(partyBranchInfo.getStatus()));
+            partyBranchInfo.setTranslatePassTime(DateFormat.getDateInstance().format(partyBranchInfo.getPassDate()));
             if (!Objects.isNull(partyBranchInfo.getPartyBranchAuditResStatus())) {
                 partyBranchInfo.setAuditStatusName(resultTranslate.translateAuditStatus(partyBranchInfo.getPartyBranchAuditResStatus()));
             }
