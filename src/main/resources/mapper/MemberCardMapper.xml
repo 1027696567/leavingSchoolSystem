@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MemberCardMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.MemberCard">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="issue_date" jdbcType="DATE" property="issueDate" />
+    <result column="cancel_date" jdbcType="DATE" property="cancelDate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stu_info_id, issue_date, cancel_date, status, active, create_user, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from member_card
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from member_card
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.example.model.MemberCard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into member_card (stu_info_id, issue_date, cancel_date, 
+      status, active, create_user, 
+      create_time)
+    values (#{stuInfoId,jdbcType=BIGINT}, #{issueDate,jdbcType=DATE}, #{cancelDate,jdbcType=DATE}, 
+      #{status,jdbcType=TINYINT}, #{active,jdbcType=TINYINT}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.example.model.MemberCard">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into member_card
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        stu_info_id,
+      </if>
+      <if test="issueDate != null">
+        issue_date,
+      </if>
+      <if test="cancelDate != null">
+        cancel_date,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="active != null">
+        active,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="issueDate != null">
+        #{issueDate,jdbcType=DATE},
+      </if>
+      <if test="cancelDate != null">
+        #{cancelDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.MemberCard">
+    update member_card
+    <set>
+      <if test="stuInfoId != null">
+        stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="issueDate != null">
+        issue_date = #{issueDate,jdbcType=DATE},
+      </if>
+      <if test="cancelDate != null">
+        cancel_date = #{cancelDate,jdbcType=DATE},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="active != null">
+        active = #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.MemberCard">
+    update member_card
+    set stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      issue_date = #{issueDate,jdbcType=DATE},
+      cancel_date = #{cancelDate,jdbcType=DATE},
+      status = #{status,jdbcType=TINYINT},
+      active = #{active,jdbcType=TINYINT},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
