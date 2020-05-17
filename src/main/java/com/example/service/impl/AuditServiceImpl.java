@@ -48,6 +48,7 @@ public class AuditServiceImpl implements AuditService {
 
     @Override
     public Result updateStuCardStatus(StuCard stuCard) {
+        stuCard.setCancelDate(new Date());
         if (stuCardMapper.updateByPrimaryKeySelective(stuCard) == 1){
             if (!Objects.isNull(stuCard.getCreateUser())&&Objects.isNull(deptAuditResMapper.selectByStuCardId(stuCard.getId()))) {
                 DeptAuditRes deptAuditRes = new DeptAuditRes();
