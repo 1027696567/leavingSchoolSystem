@@ -1,7 +1,12 @@
 package com.example.mapper;
 
 import com.example.model.LibraryCard;
+import com.example.model.LibraryCardInfo;
+import com.example.model.MemberCardInfo;
+import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+@Mapper
 public interface LibraryCardMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -14,4 +19,8 @@ public interface LibraryCardMapper {
     int updateByPrimaryKeySelective(LibraryCard record);
 
     int updateByPrimaryKey(LibraryCard record);
+
+    List<LibraryCardInfo> selectByUsername(String username);
+
+    List<LibraryCardInfo> selectByCondition(Byte status,Long stuId,Long classId, Byte libraryCardAuditResStatus);
 }

@@ -20,6 +20,71 @@
     from library_card
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <resultMap id="LibraryCard" type="com.example.model.LibraryCardInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="issue_date" jdbcType="TIMESTAMP" property="issueDate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="cancel_date" jdbcType="TIMESTAMP" property="cancelDate" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="BIGINT" property="identityId" />
+    <result column="stu_id" jdbcType="BIGINT" property="stuId" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="edu_sys" jdbcType="TINYINT" property="eduSys" />
+    <result column="admission_date" jdbcType="DATE" property="admissionDate" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="library_card_audit_res_id" jdbcType="BIGINT" property="libraryCardAuditResId" />
+    <result column="library_card_audit_res_status" jdbcType="TINYINT" property="libraryCardAuditResStatus" />
+    <result column="library_card_audit_res_content" jdbcType="VARCHAR" property="libraryCardAuditResContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+  </resultMap>
+  <select id="selectByUsername" resultMap="LibraryCard">
+    select
+    b.id as stu_info_id, b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    c.id, c.issue_date, c.cancel_date, c.`status`, c.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name,
+    f.id as library_card_audit_res_id, f.`status` as library_card_audit_res_status, f.content as library_card_audit_res_content, f.create_time, f.create_user
+    from (select id from sys_user where username = #{username,jdbcType=VARCHAR}) as a
+    LEFT JOIN stu_info as b on a.id = b.user_id
+    LEFT JOIN library_card as c on b.id = c.stu_info_id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN library_card_audit_res as f on c.id = f.library_card_id
+    WHERE c.active = 1
+  </select>
+  <select id="selectByCondition" resultMap="LibraryCard">
+    select
+    b.id as stu_info_id, b.name,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    a.id, a.issue_date, a.cancel_date, a.`status`, a.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name,
+    f.id as library_card_audit_res_id, f.`status` as library_card_audit_res_status, f.content as library_card_audit_res_content, f.create_time, f.create_user
+    from
+    (select *
+    from library_card
+    <if test="status != null">WHERE status = #{status,jdbcType=TINYINT}</if>
+    ) as a
+    INNER JOIN
+    (select
+    id, user_id, name, identity_id, stu_id, sex, edu_sys, admission_date, profession_id, dept_id, class_id
+    from stu_info
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="stuId != null">AND stu_id = #{stuId,jdbcType=BIGINT}</if>
+      <if test="classId != null">AND class_id = #{classId,jdbcType=BIGINT}</if>
+    </trim>
+    ) as b on a.stu_info_id = b.id
+    INNER JOIN sys_user as c on b.user_id = c.id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN library_card_audit_res as f on a.id = f.library_card_id
+    WHERE a.active = 1
+    <if test="libraryCardAuditResStatus != null">AND f.status = #{libraryCardAuditResStatus,jdbcType=TINYINT}</if>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from library_card
     where id = #{id,jdbcType=BIGINT}

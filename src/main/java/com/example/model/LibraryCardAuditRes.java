@@ -1,5 +1,7 @@
 package com.example.model;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +9,7 @@ import java.util.Date;
  * library_card_audit_res
  * @author 
  */
+@Data
 public class LibraryCardAuditRes implements Serializable {
     private Long id;
 
@@ -52,75 +55,4 @@ public class LibraryCardAuditRes implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getStuInfoId() {
-        return stuInfoId;
-    }
-
-    public void setStuInfoId(Long stuInfoId) {
-        this.stuInfoId = stuInfoId;
-    }
-
-    public Long getLibraryCardId() {
-        return libraryCardId;
-    }
-
-    public void setLibraryCardId(Long libraryCardId) {
-        this.libraryCardId = libraryCardId;
-    }
-
-    public Byte getStatus() {
-        return status;
-    }
-
-    public void setStatus(Byte status) {
-        this.status = status;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCreateUser() {
-        return createUser;
-    }
-
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateUser() {
-        return updateUser;
-    }
-
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
 }
