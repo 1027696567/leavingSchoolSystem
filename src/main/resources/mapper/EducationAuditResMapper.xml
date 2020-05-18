@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.EducationAuditResMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.EducationAuditRes">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="education_id" jdbcType="BIGINT" property="educationId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="update_time" jdbcType="DATE" property="updateTime" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stu_info_id, education_id, `status`, content, create_time, create_user, update_time, 
+    update_user
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from education_audit_res
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByEducationId" resultMap="BaseResultMap">
+    select * from education_audit_res where education_id = #{educationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from education_audit_res
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.model.EducationAuditRes" useGeneratedKeys="true">
+    insert into education_audit_res (stu_info_id, education_id, `status`, 
+      content, create_time, create_user, 
+      update_time, update_user)
+    values (#{stuInfoId,jdbcType=BIGINT}, #{educationId,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, 
+      #{content,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=DATE}, #{updateUser,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.model.EducationAuditRes" useGeneratedKeys="true">
+    insert into education_audit_res
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        stu_info_id,
+      </if>
+      <if test="educationId != null">
+        education_id,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="updateUser != null">
+        update_user,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        #{educationId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.EducationAuditRes">
+    update education_audit_res
+    <set>
+      <if test="stuInfoId != null">
+        stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="educationId != null">
+        education_id = #{educationId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=DATE},
+      </if>
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.EducationAuditRes">
+    update education_audit_res
+    set stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      education_id = #{educationId,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      content = #{content,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=DATE},
+      update_user = #{updateUser,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
