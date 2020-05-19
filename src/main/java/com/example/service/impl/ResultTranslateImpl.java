@@ -107,4 +107,20 @@ public class ResultTranslateImpl implements ResultTranslate {
         }
         return result;
     }
+
+    @Override
+    public String translateKeyStatus(byte value) {
+        String result = null;
+        if (!Objects.isNull(value)) {
+            switch (value){
+                case 1:
+                    result = "已归还";
+                    break;
+                case -1:
+                    result = "未归还";
+                    break;
+            }
+        }
+        return result;
+    }
 }

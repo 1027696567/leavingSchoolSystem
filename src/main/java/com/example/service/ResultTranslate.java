@@ -18,4 +18,6 @@ public interface ResultTranslate {
     String translatePassStatus(byte value);
 
     String translatePayStatus(byte value);
+
+    String translateKeyStatus(byte value);
 }
