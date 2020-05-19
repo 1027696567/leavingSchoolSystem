@@ -23,4 +23,9 @@ public class BaseModel implements Serializable {
      * 注销状态
      * */
     private String cancelStatus;
+
+    /**
+     * 缴费状态
+     * */
+    private String payStatus;
 }

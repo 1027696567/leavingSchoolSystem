@@ -16,4 +16,6 @@ public interface ResultTranslate {
      * 组织部转送状态
      * */
     String translatePassStatus(byte value);
+
+    String translatePayStatus(byte value);
 }

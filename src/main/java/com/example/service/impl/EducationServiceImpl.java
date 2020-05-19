@@ -27,7 +27,7 @@ public class EducationServiceImpl implements EducationService {
         List<EducationInfo> educationInfos = educationMapper.selectByUsername(username);
         if (educationInfos.size()>0){
             educationInfos.forEach(educationInfo -> {
-                educationInfo.setCancelStatus(resultTranslate.translateCancelStatus(educationInfo.getStatus()));
+                educationInfo.setPayStatus(resultTranslate.translatePayStatus(educationInfo.getStatus()));
                 //stuCardInfo.setTranslateReissueDate(DateFormat.getDateInstance().format(stuCardInfo.getReissueDate()));
                 if (!Objects.isNull(educationInfo.getEducationAuditResStatus())) {
                     educationInfo.setAuditStatusName(resultTranslate.translateAuditStatus(educationInfo.getEducationAuditResStatus()));
@@ -42,14 +42,14 @@ public class EducationServiceImpl implements EducationService {
 
     @Override
     public Result updateEducationStatus(Education education) {
-        if (educationMapper.updateByPrimaryKeySelective(education) == 1){
-            if (!Objects.isNull(education.getCreateUser())&&Objects.isNull(educationAuditResMapper.selectByEducationId(education.getId()))) {
-                EducationAuditRes educationAuditRes = new EducationAuditRes();
-                educationAuditRes.setStuInfoId(education.getStuInfoId());
-                educationAuditRes.setEducationId(education.getId());
-                educationAuditRes.setStatus((byte) 0);
-                educationAuditResMapper.insertSelective(educationAuditRes);
-            }
+        if (Objects.isNull(educationAuditResMapper.selectByEducationId(education.getId()))) {
+            EducationAuditRes educationAuditRes = new EducationAuditRes();
+            educationAuditRes.setCreateTime(new Date());
+            educationAuditRes.setCreateUser(education.getCreateUser());
+            educationAuditRes.setStuInfoId(education.getStuInfoId());
+            educationAuditRes.setEducationId(education.getId());
+            educationAuditRes.setStatus((byte) 0);
+            educationAuditResMapper.insertSelective(educationAuditRes);
             return Result.success();
         } else {
             return Result.failure(ResultCode.SPECIFIED_QUESTIONED_USER_NOT_EXIST);
@@ -60,7 +60,7 @@ public class EducationServiceImpl implements EducationService {
     public List<EducationInfo> findByCondition(Byte status, Long stuId, Long classId, Byte educationAuditResStatus) {
         List<EducationInfo> educationInfos = educationMapper.selectByCondition(status,stuId,classId,educationAuditResStatus);
         educationInfos.forEach(educationInfo -> {
-            educationInfo.setCancelStatus(resultTranslate.translateCancelStatus(educationInfo.getStatus()));
+            educationInfo.setPayStatus(resultTranslate.translatePayStatus(educationInfo.getStatus()));
             //stuCardInfo.setTranslateReissueDate(DateFormat.getDateInstance().format(stuCardInfo.getReissueDate()));
             if (!Objects.isNull(educationInfo.getEducationAuditResStatus())) {
                 educationInfo.setAuditStatusName(resultTranslate.translateAuditStatus(educationInfo.getEducationAuditResStatus()));

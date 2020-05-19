@@ -91,4 +91,20 @@ public class ResultTranslateImpl implements ResultTranslate {
         }
         return result;
     }
+
+    @Override
+    public String translatePayStatus(byte value) {
+        String result = null;
+        if (!Objects.isNull(value)) {
+            switch (value){
+                case 1:
+                    result = "已缴清";
+                    break;
+                case -1:
+                    result = "未缴清";
+                    break;
+            }
+        }
+        return result;
+    }
 }
