@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.MinistryFinanceMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.MinistryFinance">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="pay_date" jdbcType="DATE" property="payDate" />
+    <result column="money" jdbcType="BIGINT" property="money" />
+    <result column="receive_money" jdbcType="BIGINT" property="receiveMoney" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stu_info_id, pay_date, money, receive_money, `status`, active, create_user, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ministry_finance
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <resultMap id="MinistryFinance" type="com.example.model.MinistryFinanceInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="pay_date" jdbcType="TIMESTAMP" property="payDate" />
+    <result column="money" jdbcType="BIGINT" property="money" />
+    <result column="receive_money" jdbcType="BIGINT" property="receiveMoney" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="BIGINT" property="identityId" />
+    <result column="stu_id" jdbcType="BIGINT" property="stuId" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="edu_sys" jdbcType="TINYINT" property="eduSys" />
+    <result column="admission_date" jdbcType="DATE" property="admissionDate" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="ministry_finance_audit_res_id" jdbcType="BIGINT" property="ministryFinanceAuditResId" />
+    <result column="ministry_finance_audit_res_status" jdbcType="TINYINT" property="ministryFinanceAuditResStatus" />
+    <result column="ministry_finance_audit_res_content" jdbcType="VARCHAR" property="ministryFinanceAuditResContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+  </resultMap>
+  <select id="selectByUsername" resultMap="MinistryFinance">
+    select
+    b.id as stu_info_id, b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    c.id, c.money, c.receive_money, c.`status`, c.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name,
+    f.id as ministry_finance_audit_res_id, f.`status` as ministry_finance_audit_res_status, f.content as ministry_finance_audit_res_content, f.create_time, f.create_user
+    from (select id from sys_user where username = #{username,jdbcType=VARCHAR}) as a
+    LEFT JOIN stu_info as b on a.id = b.user_id
+    LEFT JOIN ministry_finance as c on b.id = c.stu_info_id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN ministry_finance_audit_res as f on c.id = f.ministry_finance_id
+    WHERE c.active = 1
+  </select>
+  <select id="selectByCondition" resultMap="MinistryFinance">
+    select
+    b.id as stu_info_id, b.name,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    a.id, a.money, a.receive_money, a.`status`, a.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name,
+    f.id as ministry_finance_audit_res_id, f.`status` as ministry_finance_audit_res_status, f.content as ministry_finance_audit_res_content, f.create_time, f.create_user
+    from
+    (select *
+    from ministry_finance
+    <if test="status != null">WHERE status = #{status,jdbcType=TINYINT}</if>
+    ) as a
+    INNER JOIN
+    (select
+    id, user_id, name, identity_id, stu_id, sex, edu_sys, admission_date, profession_id, dept_id, class_id
+    from stu_info
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="stuId != null">AND stu_id = #{stuId,jdbcType=BIGINT}</if>
+      <if test="classId != null">AND class_id = #{classId,jdbcType=BIGINT}</if>
+    </trim>
+    ) as b on a.stu_info_id = b.id
+    INNER JOIN sys_user as c on b.user_id = c.id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN ministry_finance_audit_res as f on a.id = f.ministry_finance_id
+    WHERE a.active = 1
+    <if test="ministryFinanceAuditResStatus != null">AND f.status = #{ministryFinanceAuditResStatus,jdbcType=TINYINT}</if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from ministry_finance
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.model.MinistryFinance" useGeneratedKeys="true">
+    insert into ministry_finance (stu_info_id, pay_date, money, 
+      receive_money, `status`, active, 
+      create_user, create_time)
+    values (#{stuInfoId,jdbcType=BIGINT}, #{payDate,jdbcType=DATE}, #{money,jdbcType=BIGINT}, 
+      #{receiveMoney,jdbcType=BIGINT}, #{status,jdbcType=TINYINT}, #{active,jdbcType=TINYINT}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.model.MinistryFinance" useGeneratedKeys="true">
+    insert into ministry_finance
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        stu_info_id,
+      </if>
+      <if test="payDate != null">
+        pay_date,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="receiveMoney != null">
+        receive_money,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="active != null">
+        active,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="payDate != null">
+        #{payDate,jdbcType=DATE},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=BIGINT},
+      </if>
+      <if test="receiveMoney != null">
+        #{receiveMoney,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.MinistryFinance">
+    update ministry_finance
+    <set>
+      <if test="stuInfoId != null">
+        stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="payDate != null">
+        pay_date = #{payDate,jdbcType=DATE},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=BIGINT},
+      </if>
+      <if test="receiveMoney != null">
+        receive_money = #{receiveMoney,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="active != null">
+        active = #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.MinistryFinance">
+    update ministry_finance
+    set stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      pay_date = #{payDate,jdbcType=DATE},
+      money = #{money,jdbcType=BIGINT},
+      receive_money = #{receiveMoney,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      active = #{active,jdbcType=TINYINT},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

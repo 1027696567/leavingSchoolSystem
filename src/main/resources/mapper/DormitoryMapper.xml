@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.DormitoryMapper">
+  <resultMap id="BaseResultMap" type="com.example.model.Dormitory">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="return_date" jdbcType="DATE" property="returnDate" />
+    <result column="dorm_number" jdbcType="BIGINT" property="dormNumber" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_time" jdbcType="DATE" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, stu_info_id, return_date, dorm_number, `status`, active, create_user, create_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dormitory
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <resultMap id="Dormitory" type="com.example.model.DormitoryInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="stu_info_id" jdbcType="BIGINT" property="stuInfoId" />
+    <result column="return_date" jdbcType="TIMESTAMP" property="returnDate" />
+    <result column="dorm_number" jdbcType="BIGINT" property="dormNumber" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="active" jdbcType="TINYINT" property="active" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="identity_id" jdbcType="BIGINT" property="identityId" />
+    <result column="stu_id" jdbcType="BIGINT" property="stuId" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="edu_sys" jdbcType="TINYINT" property="eduSys" />
+    <result column="admission_date" jdbcType="DATE" property="admissionDate" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
+    <result column="class_id" jdbcType="BIGINT" property="classId" />
+    <result column="dormitory_audit_res_id" jdbcType="BIGINT" property="dormitoryAuditResId" />
+    <result column="dormitory_audit_res_status" jdbcType="TINYINT" property="dormitoryAuditResStatus" />
+    <result column="dormitory_audit_res_content" jdbcType="VARCHAR" property="dormitoryAuditResContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+  </resultMap>
+  <select id="selectByUsername" resultMap="Dormitory">
+    select
+    b.id as stu_info_id, b.`name`,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    c.id, c.return_date, c.dorm_number, c.`status`, c.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name,
+    f.id as dormitory_audit_res_id, f.`status` as dormitory_audit_res_status, f.content as dormitory_audit_res_content, f.create_time, f.create_user
+    from (select id from sys_user where username = #{username,jdbcType=VARCHAR}) as a
+    LEFT JOIN stu_info as b on a.id = b.user_id
+    LEFT JOIN dormitory as c on b.id = c.stu_info_id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN dormitory_audit_res as f on c.id = f.dormitory_id
+    WHERE c.active = 1
+  </select>
+  <select id="selectByCondition" resultMap="Dormitory">
+    select
+    b.id as stu_info_id, b.name,b.identity_id,b.stu_id,b.sex,b.edu_sys,b.admission_date, b.class_id,
+    a.id, a.return_date, a.dorm_number, a.`status`, a.active,
+    d.`name` as dept_name ,
+    e.`name` as profession_name,
+    f.id as dormitory_audit_res_id, f.`status` as dormitory_audit_res_status, f.content as dormitory_audit_res_content, f.create_time, f.create_user
+    from
+    (select *
+    from dormitory
+    <if test="status != null">WHERE status = #{status,jdbcType=TINYINT}</if>
+    ) as a
+    INNER JOIN
+    (select
+    id, user_id, name, identity_id, stu_id, sex, edu_sys, admission_date, profession_id, dept_id, class_id
+    from stu_info
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="stuId != null">AND stu_id = #{stuId,jdbcType=BIGINT}</if>
+      <if test="classId != null">AND class_id = #{classId,jdbcType=BIGINT}</if>
+    </trim>
+    ) as b on a.stu_info_id = b.id
+    INNER JOIN sys_user as c on b.user_id = c.id
+    LEFT JOIN department as d on b.dept_id = d.dept_id
+    LEFT JOIN profession as e on b.profession_id = e.profession_id
+    LEFT JOIN dormitory_audit_res as f on a.id = f.dormitory_id
+    WHERE a.active = 1
+    <if test="dormitoryAuditResStatus != null">AND f.status = #{dormitoryAuditResStatus,jdbcType=TINYINT}</if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dormitory
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.example.model.Dormitory" useGeneratedKeys="true">
+    insert into dormitory (stu_info_id, return_date, dorm_number, 
+      `status`, active, create_user, 
+      create_time)
+    values (#{stuInfoId,jdbcType=BIGINT}, #{returnDate,jdbcType=DATE}, #{dormNumber,jdbcType=BIGINT}, 
+      #{status,jdbcType=TINYINT}, #{active,jdbcType=TINYINT}, #{createUser,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.model.Dormitory" useGeneratedKeys="true">
+    insert into dormitory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        stu_info_id,
+      </if>
+      <if test="returnDate != null">
+        return_date,
+      </if>
+      <if test="dormNumber != null">
+        dorm_number,
+      </if>
+      <if test="status != null">
+        `status`,
+      </if>
+      <if test="active != null">
+        active,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuInfoId != null">
+        #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="returnDate != null">
+        #{returnDate,jdbcType=DATE},
+      </if>
+      <if test="dormNumber != null">
+        #{dormNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="active != null">
+        #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.example.model.Dormitory">
+    update dormitory
+    <set>
+      <if test="stuInfoId != null">
+        stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="returnDate != null">
+        return_date = #{returnDate,jdbcType=DATE},
+      </if>
+      <if test="dormNumber != null">
+        dorm_number = #{dormNumber,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        `status` = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="active != null">
+        active = #{active,jdbcType=TINYINT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=DATE},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.example.model.Dormitory">
+    update dormitory
+    set stu_info_id = #{stuInfoId,jdbcType=BIGINT},
+      return_date = #{returnDate,jdbcType=DATE},
+      dorm_number = #{dormNumber,jdbcType=BIGINT},
+      `status` = #{status,jdbcType=TINYINT},
+      active = #{active,jdbcType=TINYINT},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=DATE}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
