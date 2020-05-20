@@ -10,7 +10,7 @@ import java.util.Date;
  * @author
  */
 @Data
-public class SysUser implements Serializable {
+public class SysUser extends BaseModel implements Serializable {
     private Integer id;
 
     /**

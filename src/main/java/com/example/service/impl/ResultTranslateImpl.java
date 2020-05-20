@@ -14,7 +14,7 @@ public class ResultTranslateImpl implements ResultTranslate {
     public String translateActive(Object value) {
         String result = null;
         if (!Objects.isNull(value)) {
-            result = Objects.equals(value, 1) ? "启用" : "禁用";
+            result = Objects.equals(value, (byte)1) ? "启用" : "禁用";
         }
         return result;
     }

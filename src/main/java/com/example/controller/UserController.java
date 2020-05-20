@@ -3,6 +3,7 @@ package com.example.controller;
 import com.example.model.Result;
 import com.example.model.SysUser;
 import com.example.service.ShiroService;
+import com.example.service.SysUserService;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class UserController {
 
     @Autowired
     private ShiroService shiroService;
+    @Autowired
+    private SysUserService sysUserService;
 
     @GetMapping("/login")
     public Result userLogin(@RequestParam(value = "userName") String userName, @RequestParam(value = "passWord") String passWord) {
@@ -42,5 +45,10 @@ public class UserController {
     @PostMapping("/register")
     public Result register (@RequestBody SysUser sysUser) {
         return shiroService.register(sysUser);
+    }
+
+    @GetMapping("/sysUser")
+    public Result findAllUser() {
+        return Result.success(sysUserService.findAllUser());
     }
 }
