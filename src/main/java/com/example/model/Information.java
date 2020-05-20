@@ -59,6 +59,8 @@ public class Information extends BaseModel implements Serializable {
      */
     private Date updateTime;
 
+    private String updateTimeToString;
+
     /**
      * 创建用户名
      */

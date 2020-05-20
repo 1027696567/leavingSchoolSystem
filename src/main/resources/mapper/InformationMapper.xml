@@ -28,7 +28,7 @@
     where id = #{id,jdbcType=BIGINT}
   </select>
   <select id="selectAll" resultMap="BaseResultMap">
-    select a.* ,b.name As name from (information AS a LEFT JOIN department AS b ON a.dept_id = b.dept_id) WHERE active = 1 order by update_time desc
+    select a.* ,b.name As name from (information AS a LEFT JOIN department AS b ON a.dept_id = b.dept_id) WHERE active = 1
   </select>
   <select id="selectByCondition" parameterType="com.example.model.Information" resultMap="BaseResultMap">
     select a.*,b.name As name from (select * from information

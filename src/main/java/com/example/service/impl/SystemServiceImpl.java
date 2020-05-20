@@ -8,8 +8,10 @@ import com.example.service.ResultTranslate;
 import com.example.service.SystemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,6 +57,7 @@ public class SystemServiceImpl implements SystemService {
                     information.setActiveName(resultTranslate.translateActive(information.getActive()));
                     information.setStatusName(resultTranslate.translateStatus(information.getStatus()));
                     information.setAuditStatusName(resultTranslate.translateAuditStatus(information.getAuditStatus()));
+                    information.setUpdateTimeToString(DateFormat.getDateTimeInstance().format(information.getUpdateTime()));
                 });
         return Result.success(informationList);
     }
@@ -68,13 +71,16 @@ public class SystemServiceImpl implements SystemService {
                     information.setActiveName(resultTranslate.translateActive(information.getActive()));
                     information.setStatusName(resultTranslate.translateStatus(information.getStatus()));
                     information.setAuditStatusName(resultTranslate.translateAuditStatus(information.getAuditStatus()));
+                    information.setUpdateTimeToString(DateFormat.getDateTimeInstance().format(information.getUpdateTime()));
                 });
         return Result.success(informationList);
     }
 
     @Override
     public Result findById(Long id) {
-        return Result.success(informationMapper.selectById(id));
+        Information information = informationMapper.selectById(id);
+        information.setUpdateTimeToString(DateFormat.getDateTimeInstance().format(information.getUpdateTime()));
+        return Result.success(information);
     }
 
     @Override
