@@ -62,4 +62,13 @@ public class SystemController {
     public Result findAuditResByInformationId(@RequestParam("id")Long id) {
         return Result.success(systemService.findAuditResByInformationId(id));
     }
+
+    /**
+     * 资讯审核权限检测
+     * */
+    @GetMapping("/buttomAudit")
+    @RequiresPermissions("sys:admin:audit")
+    public Result bottomAudit() {
+        return Result.success();
+    }
 }
